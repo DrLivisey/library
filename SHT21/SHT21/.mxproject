@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/EGOR/Documents/GitHub/SHT21/SHT21/Inc
+HeaderPath=C:/Users/EGOR/Documents/GitHub/library/SHT21/SHT21/Inc
 HeaderFiles=stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=C:/Users/EGOR/Documents/GitHub/SHT21/SHT21/Src
+SourcePath=C:/Users/EGOR/Documents/GitHub/library/SHT21/SHT21/Src
 SourceFiles=stm32f1xx_it.c;stm32f1xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]
