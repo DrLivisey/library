@@ -55,8 +55,8 @@ uint8_t tRXBuff[3];
 uint8_t CalibData[22];
 uint8_t pRXbuff[3];
 uint8_t TXBuff[2];
-uint16_t  UT,AC5,AC6;
-int16_t MC,MD,X1,X2,TempMes;
+uint16_t  AC4,AC5,AC6;
+int16_t MC,MD,X1,X2,AC1,AC2,AC3,B1,B2,MB;
 
 /* USER CODE END PV */
 
@@ -65,7 +65,11 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C2_Init(void);
 /* USER CODE BEGIN PFP */
-
+void BMP160_init(void);
+uint16_t BMP180_get_UP(void);
+uint16_t BMP180_get_UT (void);
+uint16_t BMP180_get_Temperature(void);
+uint16_t BMP180_get_Press(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -104,9 +108,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-	TXBuff[0]=AddrCalib;
-	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 1, (uint32_t)1000);
-	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)addr, CalibData, 22, (uint32_t)1000);
+	
 	TXBuff[0]=CommReg;
 	TXBuff[1]=TempCode;
 	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 2, (uint32_t)1000);
@@ -121,7 +123,6 @@ int main(void)
 	MD=((CalibData[20])<<8) + CalibData[21];;
 	X1=((UT-AC6)*AC5)>>15;
 	X2=(MC<<11)/(X1+MD);
-	TempMes=(X1+X2+8)>>4;
   /* USER CODE END 2 */
  
  
@@ -221,7 +222,74 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void BMP180_init(void)
+{	
+	uint8_t Calibr[22]; 
+	TXBuff[0]=AddrCalib;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 1, (uint32_t)1000);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)addr, Calibr, 22, (uint32_t)1000);
+	AC1=((Calibr[0])<<8)|Calibr[1];
+	AC2=((Calibr[2])<<8)|Calibr[3];
+	AC3=((Calibr[4])<<8)|Calibr[5];
+	AC4=((Calibr[6])<<8)|Calibr[7];
+	AC5=((Calibr[8])<<8)|Calibr[9];
+	AC6=((Calibr[10])<<8)|Calibr[11];
+	B1=((Calibr[12])<<8)|Calibr[13];
+	B2=((Calibr[14])<<8)|Calibr[15];
+	MB=((Calibr[16])<<8)|Calibr[17];
+	MC=((Calibr[18])<<8)|Calibr[19];
+	MD=((Calibr[20])<<8)|Calibr[21];
+}
 
+uint16_t BMP180_get_UT (void)
+{
+	uint16_t UT=0;
+	TXBuff[0]=CommReg;
+	TXBuff[1]=TempCode;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 2, (uint32_t)1000);
+	TXBuff[0]=Data;
+	HAL_Delay(5);
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 1, (uint32_t)1000);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)addr, tRXBuff, 3, (uint32_t)1000);
+	UT=(tRXBuff[0]<<8)|tRXBuff[1];
+	return(UT);
+}
+
+uint16_t BMP180_get_Temperature(void)
+{	
+	uint16_t UT,Temperature;
+	TXBuff[0]=CommReg;
+	TXBuff[1]=TempCode;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 2, (uint32_t)1000);
+	TXBuff[0]=Data;
+	HAL_Delay(5);
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 1, (uint32_t)1000);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)addr, tRXBuff, 3, (uint32_t)1000);
+	UT=(tRXBuff[0]<<8)+tRXBuff[1];
+	X1=((UT-AC6)*AC5)>>15;
+	X2=(MC<<11)/(X1+MD);
+	Temperature=(X1+X2+8)>>4;
+	return(Temperature);
+}
+
+uint16_t BMP180_get_UP(void)
+{
+	uint16_t UP=0;
+	TXBuff[0]=CommReg;
+	TXBuff[1]=PressCode;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 2, (uint32_t)1000);
+	TXBuff[0]=Data;
+	HAL_Delay(5);
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)addr, TXBuff, 1, (uint32_t)1000);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)addr, tRXBuff, 3, (uint32_t)1000);
+	UP=(tRXBuff[0]<<8)|tRXBuff[1];
+	return(UP);
+}
+
+uint16_t BMP180_get_Press(void)
+{
+	
+}
 /* USER CODE END 4 */
 
 /**
