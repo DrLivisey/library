@@ -33,6 +33,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+uint8_t ph = 0xf5;
+uint8_t ud = 0xe7;
+uint8_t t =0xf3;
+uint8_t re = 0xFE;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,7 +48,10 @@
 I2C_HandleTypeDef hi2c2;
 
 /* USER CODE BEGIN PV */
-
+uint8_t phRXbuff[]={0x00, 0x00, 0x00};
+uint8_t TXbuff[]={0x00};
+uint8_t tRXbuff[]={0x00, 0x00, 0x00};
+uint8_t udRXbuff[]={0x00};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,7 +98,22 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-
+	TXbuff [0] = ph;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
+	HAL_Delay (26);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, phRXbuff, 1, (uint32_t)1000);
+	HAL_Delay (1000);
+	TXbuff [0] = t;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
+	HAL_Delay (70);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, tRXbuff, 1, (uint32_t)1000);
+	HAL_Delay (1000);
+	TXbuff [0] = ud;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
+	HAL_Delay (1);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, udRXbuff, 1, (uint32_t)1000);
+	HAL_Delay (1000);
+	
   /* USER CODE END 2 */
  
  

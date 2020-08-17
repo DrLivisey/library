@@ -33,6 +33,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+uint8_t ph = 0xf5;
+uint8_t ud = 0xe7;
+uint8_t t =0xf3;
+uint8_t re = 0xFE;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,16 +48,20 @@
 I2C_HandleTypeDef hi2c2;
 
 /* USER CODE BEGIN PV */
-uint8_t RXbuff[]={0x00, 0x00, 0x00};
+uint8_t phRXbuff[]={0x00, 0x00, 0x00};
 uint8_t TXbuff[]={0x00};
+uint8_t tRXbuff[]={0x00, 0x00, 0x00};
+uint8_t udRXbuff[]={0x00};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C2_Init(void);
-/* USER CODE BEGIN PFP */
 
+/* USER CODE BEGIN PFP */
+float convertph (uint8_t Mnumb,uint8_t Lnumb);
+float convertT (uint8_t Mnumb,uint8_t Lnumb);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -92,10 +100,24 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-	TXbuff [0] = 0xe7;
+	TXbuff [0] = ph;
 	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
-//	HAL_Delay (66);
-	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, RXbuff, 1, (uint32_t)1000);
+	HAL_Delay (26);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, phRXbuff, 3, (uint32_t)1000);
+	float mesph=convertph(phRXbuff[0],phRXbuff[1]);
+	HAL_Delay (1000);
+	
+	TXbuff [0] = t;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
+	HAL_Delay (70);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, tRXbuff, 3, (uint32_t)1000);
+	HAL_Delay (1000);
+	float MesT=convertT(tRXbuff[0], tRXbuff[1]);
+	TXbuff [0] = ud;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
+	HAL_Delay (1);
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, udRXbuff, 1, (uint32_t)1000);
+	HAL_Delay (1000);
   /* USER CODE END 2 */
  
  
@@ -106,7 +128,7 @@ int main(void)
   {
 	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
 //	HAL_Delay (66);
-	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, RXbuff, 1, (uint32_t)1000); 
+	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, udRXbuff, 1, (uint32_t)1000); 
 	HAL_Delay (1000);
 		/* USER CODE END WHILE */
 
@@ -202,7 +224,32 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+float convertph (uint8_t Mnumb,uint8_t Lnumb){
+	float Mdec=0,Ldec=0,ph;
+	for(uint8_t i=0;i<Mnumb;i++)
+	{
+		Mdec++;
+	}
+	for(uint8_t i=0;i<Lnumb;i++)
+	{
+		Ldec++;
+	}
+	ph=-6+((125*(256*Mdec+Ldec))/(65536));
+	return (ph);
+}
+float convertT (uint8_t Mnumb,uint8_t Lnumb){
+	float Mdec=0,Ldec=0,T;
+	for(uint8_t i=0;i<Mnumb;i++)
+	{
+		Mdec++;
+	}
+	for(uint8_t i=0;i<Lnumb;i++)
+	{
+		Ldec++;
+	}
+	T=-46.85 + (175.72*(256*Mnumb+Lnumb))/65536;
+	return (T);
+}
 /* USER CODE END 4 */
 
 /**
