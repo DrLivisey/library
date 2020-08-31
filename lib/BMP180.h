@@ -9,7 +9,7 @@
 #define AddrCalib 0xAA;
 
 void BMP180_init(void);
-int16_t BMP180_get_UP(void);
-int16_t BMP180_get_UT(void);
-int16_t BMP180_get_Temperature(void);
-uint32_t BMP180_get_Press(void);
+int16_t BMP180_get_UP(void);//get Pressure without calc
+int16_t BMP180_get_UT(void);//get Temperature without calc
+int16_t BMP180_get_Temperature(void);//get Temperature
+uint32_t BMP180_get_Press(void);//get Pressure

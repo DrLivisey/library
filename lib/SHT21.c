@@ -40,6 +40,5 @@ void SHT21_restart(void)
 	TXbuff [0] = rest;
 	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t)0x80, TXbuff, 1, (uint32_t)1000);
 	HAL_Delay (1);
-	HAL_I2C_Master_Receive(&hi2c2, (uint16_t)0x80, RXbuff, 1, (uint32_t)1000);
-	HAL_Delay (1000);
+
 }

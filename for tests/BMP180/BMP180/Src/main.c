@@ -47,6 +47,7 @@ I2C_HandleTypeDef hi2c2;
 /* USER CODE BEGIN PV */
 
 uint32_t press=0x0000000;
+int32_t tem;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,7 +95,6 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 	BMP180_init();
-	press=BMP180_get_Press();
 	
   /* USER CODE END 2 */
  
@@ -105,7 +105,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	
+	press=BMP180_get_Press();
+	tem=BMP180_get_Temperature();
+		HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

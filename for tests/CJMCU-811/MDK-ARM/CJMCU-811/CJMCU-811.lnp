@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"cjmcu-811\startup_stm32f103xb.o"
+"cjmcu-811\main.o"
+"cjmcu-811\stm32f1xx_it.o"
+"cjmcu-811\stm32f1xx_hal_msp.o"
+"cjmcu-811\ccs811.o"
+"cjmcu-811\stm32f1xx_hal_gpio_ex.o"
+"cjmcu-811\stm32f1xx_hal_i2c.o"
+"cjmcu-811\stm32f1xx_hal.o"
+"cjmcu-811\stm32f1xx_hal_rcc.o"
+"cjmcu-811\stm32f1xx_hal_rcc_ex.o"
+"cjmcu-811\stm32f1xx_hal_gpio.o"
+"cjmcu-811\stm32f1xx_hal_dma.o"
+"cjmcu-811\stm32f1xx_hal_cortex.o"
+"cjmcu-811\stm32f1xx_hal_pwr.o"
+"cjmcu-811\stm32f1xx_hal_flash.o"
+"cjmcu-811\stm32f1xx_hal_flash_ex.o"
+"cjmcu-811\stm32f1xx_hal_exti.o"
+"cjmcu-811\stm32f1xx_hal_tim.o"
+"cjmcu-811\stm32f1xx_hal_tim_ex.o"
+"cjmcu-811\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "CJMCU-811\CJMCU-811.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "CJMCU-811.map" -o CJMCU-811\CJMCU-811.axf
