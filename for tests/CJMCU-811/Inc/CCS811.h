@@ -10,6 +10,6 @@
 void CCS811_init(void);
 uint16_t CCS811_Get_eCO2 (void);// eCO2 in ppm
 uint16_t CCS811_Get_TVOC (void);// TVOC in ppb
-void CCS811_Change_Mode (uint16_t mod);
-void CCS811_Add_Env_data (uint16_t humidity, uint16_t temperature);//first humidity, second temperature;
+void CCS811_Change_Mode (uint8_t mod);
+void CCS811_Add_Env_data (uint8_t humidity, uint8_t temperature);//first humidity, second temperature;
 void CCS8811_Restart (void);

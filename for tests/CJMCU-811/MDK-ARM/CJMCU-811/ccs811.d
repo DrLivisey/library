@@ -1,6 +1,6 @@
-cjmcu-811\ccs811.o: CCS811.c
-cjmcu-811\ccs811.o: ../Inc/CCS811.h
-cjmcu-811\ccs811.o: ../Inc/main.h
+cjmcu-811\ccs811.o: ..\Inc\CCS811.c
+cjmcu-811\ccs811.o: ..\Inc\CCS811.h
+cjmcu-811\ccs811.o: ..\Inc\main.h
 cjmcu-811\ccs811.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 cjmcu-811\ccs811.o: ../Inc/stm32f1xx_hal_conf.h
 cjmcu-811\ccs811.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h

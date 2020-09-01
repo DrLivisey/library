@@ -45,7 +45,7 @@ uint16_t CCS811_Get_TVOC (void)
 }
 
 
-void CCS811_Change_Mode (uint16_t mod)
+void CCS811_Change_Mode (uint8_t mod)
 {
 	switch(mod){
 	case 1:
@@ -80,10 +80,23 @@ void CCS811_Change_Mode (uint16_t mod)
 	}
 }
 
-void CCS811_Add_Env_data (uint16_t humidity, uint16_t temperature)
+void CCS811_Add_Env_data (uint8_t humidity, uint8_t temperature)
 {
-	
+	int tmp;
+	tmp=50-humidity;
+	tmp=tmp<<1;
+	humidity=0x64-tmp;
+	ccs_TxBuff[0]=env_data;
+	ccs_TxBuff[1]=humidity;
+	ccs_TxBuff[2]=0x00;
+	tmp=25-temperature;
+	tmp=tmp<<1;
+	temperature=0x64-tmp;
+	ccs_TxBuff[3]=temperature;
+	ccs_TxBuff[4]=0x00;
+	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t) (0x5a<<1), ccs_TxBuff, 5, (uint32_t) 1000);
 }
+
 void CCS8811_Restart (void)
 {
 		ccs_TxBuff[0]=0xFF;

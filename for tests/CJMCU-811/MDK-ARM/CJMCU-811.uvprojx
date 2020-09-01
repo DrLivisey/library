@@ -390,9 +390,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>::CMSIS</GroupName>
-        </Group>
-        <Group>
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
@@ -413,7 +410,7 @@
             <File>
               <FileName>CCS811.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\CCS811.c</FilePath>
+              <FilePath>..\Inc\CCS811.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -501,6 +498,9 @@
               <FilePath>../Src/system_stm32f1xx.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
     </Target>

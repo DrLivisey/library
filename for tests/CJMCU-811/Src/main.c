@@ -20,7 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "CCS811.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -45,10 +45,7 @@
 I2C_HandleTypeDef hi2c2;
 
 /* USER CODE BEGIN PV */
-uint8_t TxBuff[2];
-uint8_t RxBuff[1];
-uint8_t RxBuff1[1];
-uint8_t RxBuffer[8];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,25 +106,6 @@ int main(void)
     /* USER CODE END WHILE */	
 		
     /* USER CODE BEGIN 3 */
-		TxBuff[0]=0xF4;
-		HAL_I2C_Master_Transmit(&hi2c2, (uint16_t) (0x5a<<1), TxBuff, 1, (uint32_t)1000);
-		TxBuff[0]=0x00;
-		HAL_I2C_Master_Transmit(&hi2c2, (uint16_t) (0x5a<<1), TxBuff, 1, (uint32_t)1000);
-		HAL_I2C_Master_Receive (&hi2c2, (uint16_t) (0x5a<<1), RxBuff, 1, (uint32_t)1000);
-		if(RxBuff[0]==0x98){
-			TxBuff[0]=0x02;
-			HAL_I2C_Master_Transmit(&hi2c2, (uint16_t) (0x5a<<1), TxBuff, 1, (uint32_t)1000);
-			HAL_I2C_Master_Receive (&hi2c2, (uint16_t) (0x5a<<1), RxBuffer, 8, (uint32_t)1000);
-			HAL_Delay(1000);
-		}
-		HAL_Delay(1000);
-		TxBuff[1]=0x10;
-		TxBuff[0]=0x01;
-		HAL_I2C_Master_Transmit(&hi2c2, (uint16_t) (0x5a<<1), TxBuff, 2, (uint32_t)1000);
-		HAL_Delay(1000);
-		HAL_I2C_Master_Transmit(&hi2c2, (uint16_t) (0x5a<<1), TxBuff, 1, (uint32_t)1000);
-		HAL_I2C_Master_Receive (&hi2c2, (uint16_t) (0x5a<<1), RxBuff1, 1, (uint32_t)1000);
-		HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
