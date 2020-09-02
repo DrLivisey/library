@@ -45,7 +45,8 @@
 I2C_HandleTypeDef hi2c2;
 
 /* USER CODE BEGIN PV */
-
+uint16_t eCO2;
+uint16_t TVOC;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,9 +93,8 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-//	TxBuff[0]=0x00;
-//	HAL_I2C_Master_Transmit(&hi2c2, (uint16_t) 0x5a, TxBuff, 1, (uint32_t)1000);
-//	HAL_I2C_Master_Receive (&hi2c2, (uint16_t) 0x5a, RxBuff, 1, (uint32_t)1000);
+	CCS811_init();
+	CCS811_Change_Mode(1);
   /* USER CODE END 2 */
  
  
@@ -106,6 +106,8 @@ int main(void)
     /* USER CODE END WHILE */	
 		
     /* USER CODE BEGIN 3 */
+		eCO2=CCS811_Get_eCO2();
+		TVOC=CCS811_Get_TVOC();
   }
   /* USER CODE END 3 */
 }

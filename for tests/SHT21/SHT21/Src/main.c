@@ -48,6 +48,8 @@
 I2C_HandleTypeDef hi2c2;
 
 /* USER CODE BEGIN PV */
+float mesph;
+float MesT;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -105,8 +107,8 @@ int main(void)
   while (1)
   {
 		/* USER CODE END WHILE */
-	float mesph=SHT21_get_Ph();
-	float MesT=SHT21_get_Temperature();
+	mesph=SHT21_get_Ph();
+	MesT=SHT21_get_Temperature();
 	uint8_t udata=SHT21_get_UR();
     /* USER CODE BEGIN 3 */
   }
